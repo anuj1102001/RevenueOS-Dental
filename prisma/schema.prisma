@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LeadTemperature { HOT WARM COLD }
+enum LeadStatus { NEW QUALIFIED CONSULTATION_REQUESTED FOLLOW_UP APPOINTMENT_BOOKED WON LOST }
+
+model Lead {
+  id            String          @id @default(cuid())
+  name          String
+  phone         String
+  email         String?
+  treatment     String
+  preferredTime String?
+  source        String          @default("Website")
+  temperature   LeadTemperature @default(WARM)
+  status        LeadStatus      @default(NEW)
+  consent       Boolean         @default(false)
+  notes         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  conversations Conversation[]
+}
+
+model Conversation {
+  id        String   @id @default(cuid())
+  leadId    String
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+}
