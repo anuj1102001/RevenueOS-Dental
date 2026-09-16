@@ -7,8 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum LeadTemperature { HOT WARM COLD }
-enum LeadStatus { NEW QUALIFIED CONSULTATION_REQUESTED FOLLOW_UP APPOINTMENT_BOOKED WON LOST }
+enum LeadTemperature {
+  HOT
+  WARM
+  COLD
+}
+enum LeadStatus {
+  NEW
+  QUALIFIED
+  CONSULTATION_REQUESTED
+  FOLLOW_UP
+  APPOINTMENT_BOOKED
+  WON
+  LOST
+}
 
 model Lead {
   id            String          @id @default(cuid())

@@ -16,15 +16,15 @@ Visitor → Smile Concierge → consultation request → PostgreSQL lead → Rev
 ## Run locally
 1. Clone the repository.
 2. Run `npm install`.
-3. Copy `.env.example` to `.env.local` and add a PostgreSQL `DATABASE_URL`.
+3. Copy `.env.example` to `.env` and add a PostgreSQL `DATABASE_URL`.
 4. Run `npx prisma generate`.
-5. Run `npx prisma db push` for the demo database.
+5. Run `npm run db:migrate` to create the database tables.
 6. Optionally add `OPENAI_API_KEY` for the live concierge.
 7. Run `npm run dev` and open `http://localhost:3000`.
 8. RevenueOS dashboard: `http://localhost:3000/dashboard`.
 
 ## Deployment
-Deploy the Next.js app to Vercel and use managed PostgreSQL. Add `DATABASE_URL` and optionally `OPENAI_API_KEY` in the hosting environment, then configure Prisma migrations for releases.
+Deploy the Next.js app to Vercel and use managed PostgreSQL. Add `DATABASE_URL` and optionally `OPENAI_API_KEY` in the hosting environment, run `npm run db:migrate` once against the database before using lead capture. Run migrations with a direct (non-pooler) PostgreSQL URL; the deployed application can use the pooled URL. The build generates Prisma Client automatically.
 
 ## Healthcare scope
 The concierge is restricted to general service navigation and consultation-booking assistance. It must not diagnose, prescribe, determine suitability, promise outcomes or act as emergency care. Production use requires clinic-approved content, privacy/consent review, appropriate data-processing agreements and jurisdiction-specific healthcare/comms compliance.
