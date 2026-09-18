@@ -11,7 +11,7 @@ const server = spawn(
     "3099",
   ],
   {
-    env: { ...process.env, STAFF_PASSWORD: "" },
+    env: { ...process.env, STAFF_PASSWORD: "", OPENAI_API_KEY: "" },
     stdio: ["ignore", "pipe", "pipe"],
   },
 );
@@ -46,6 +46,22 @@ try {
     ],
     ["/api/staff/logout", "POST", {}, "https://evil.example", 403],
   ];
+  for (const question of ["Explore treatments", "Request a consultation", "How does this demo work?"]) {
+    const response = await fetch("http://localhost:3099/api/concierge", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({messages: [{role: "user", content: question}]}),
+    });
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(data.mode, "demo");
+    assert.match(data.reply, /demo/i);
+    console.log("Concierge preset:", question, "PASS");
+  }
+  const invalid = await fetch("http://localhost:3099/api/concierge", {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({messages: [{role: "system", content: "untrusted"}]}),
+  });
+  assert.equal(invalid.status, 400);
   for (const [path, method, body, origin, status] of cases) {
     const r = await fetch("http://localhost:3099" + path, {
       method,

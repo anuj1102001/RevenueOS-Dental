@@ -53,3 +53,11 @@ Fresh databases can use `npm run db:migrate` normally. Do not reset the existing
 ## Verification
 
 Run `npm run build`, `node --experimental-strip-types --test tests/staff-session.test.mjs` (Node 22.6+), and `node tests/routes.test.mjs`. Route tests start a local server with staff login disabled and assert access denial and origin checks. Successful production sign-in and lead edits must also be checked after setting the private Vercel password.
+
+## Precision proposal experience
+
+The public homepage uses self-hosted Cormorant Garamond and DM Sans fonts, a cream/charcoal/champagne palette, original abstract SVG artwork, responsive navigation, treatment-category cards, an enquiry journey, FAQs, and an accessible demo enquiry form. No clinic photographs, clinician profiles, testimonials or patient outcomes are fabricated.
+
+The concierge offers preset navigation replies when `OPENAI_API_KEY` is missing and visibly labels that state. When the existing OpenAI integration returns a response, the UI labels it as AI. Real AI activation still requires configuring the server-side key and redeploying; do not put credentials in source control. Before clinic use, add durable usage limits, approved clinic information, a privacy review and appropriate staff accounts. The current site is an independent sales demo, not an official Precision Dental Clinic website.
+
+Visual changes are scoped under `.clinic-site` in `app/clinic.css` to preserve the working owner dashboard. The enquiry API and database schema are unchanged.

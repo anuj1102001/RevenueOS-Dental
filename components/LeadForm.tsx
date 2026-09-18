@@ -1,25 +1,13 @@
 'use client';
 import { FormEvent, useState } from 'react';
-
-export default function LeadForm(){
-  const [state,setState]=useState<'idle'|'loading'|'done'|'error'>('idle');
-  async function submit(e:FormEvent<HTMLFormElement>){
-    e.preventDefault(); setState('loading');
-    const f=new FormData(e.currentTarget);
-    const payload={name:f.get('name'),phone:f.get('phone'),email:f.get('email'),treatment:f.get('treatment'),preferredTime:f.get('preferredTime'),consent:f.get('consent')==='on'};
-    try{const r=await fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); if(!r.ok)throw new Error(); setState('done');}catch{setState('error');}
+export default function LeadForm() {
+  const [state, setState] = useState<'idle'|'loading'|'done'|'error'>('idle');
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault(); if (state === 'loading') return; setState('loading');
+    const f = new FormData(e.currentTarget);
+    const payload = {name:f.get('name'), phone:f.get('phone'), email:f.get('email'), treatment:f.get('treatment'), preferredTime:f.get('preferredTime'), consent:f.get('consent')==='on'};
+    try { const r = await fetch('/api/leads', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)}); if (!r.ok) throw new Error(); setState('done'); } catch { setState('error'); }
   }
-  if(state==='done')return <div className="card"><h3>Consultation requested.</h3><p className="muted">Thank you. Your request has been captured in this RevenueOS demo.</p></div>;
-  return <form className="card" onSubmit={submit}>
-    <h3>Request a consultation</h3>
-    <p className="muted">Demo flow — no appointment is confirmed until a clinic team accepts it.</p>
-    <p><input name="name" required placeholder="Full name" /></p>
-    <p><input name="phone" required placeholder="Phone / WhatsApp" /></p>
-    <p><input name="email" type="email" placeholder="Email (optional)" /></p>
-    <p><select name="treatment" defaultValue="Smile makeover"><option>Smile makeover</option><option>Dental implants</option><option>Clear aligners</option><option>Teeth whitening</option><option>General consultation</option></select></p>
-    <p><input name="preferredTime" placeholder="Preferred day / time" /></p>
-    <label className="consent"><input name="consent" type="checkbox" required/> I agree to be contacted about this consultation request.</label>
-    {state==='error'&&<p className="error">We couldn't save the request. Please try again.</p>}
-    <button className="button" disabled={state==='loading'}>{state==='loading'?'Sending…':'Request consultation'}</button>
-  </form>;
+  if (state === 'done') return <div className="consult-form form-success" role="status"><span className="success-symbol" aria-hidden="true">✓</span><p className="kicker">YOUR DEMO ENQUIRY IS SAVED</p><h3>A thoughtful next step.</h3><p>Your request is now in the RevenueOS owner dashboard. This is a demonstration: no appointment is confirmed and no clinic has been contacted.</p><a className="c-text-link" href="/dashboard">View owner dashboard ↗</a></div>;
+  return <form className="consult-form" onSubmit={submit} aria-busy={state === 'loading'}><div className="form-heading"><h3>Begin a conversation</h3><span>DEMO ENQUIRY</span></div><div className="form-fields"><label>Full name<input name="name" autoComplete="name" required minLength={2} maxLength={80} placeholder="Your demo name" /></label><label>Phone / WhatsApp<input name="phone" type="tel" autoComplete="tel" required minLength={7} maxLength={30} placeholder="e.g. 0000000000" /></label><label className="full-field">Email <span>(optional)</span><input name="email" type="email" autoComplete="email" placeholder="you@example.com" /></label><label className="full-field">I’m interested in<select name="treatment" defaultValue="General consultation"><option>General consultation</option><option>Smile makeover</option><option>Dental implants</option><option>Clear aligners</option><option>Teeth whitening</option></select></label><label className="full-field">Preferred day / time <span>(optional)</span><input name="preferredTime" maxLength={100} placeholder="e.g. Weekday afternoons" /></label></div><label className="form-consent"><input name="consent" type="checkbox" required/><span>I agree to save this demo enquiry and its contact preference. I understand no clinic will contact me from this demonstration.</span></label>{state === 'error' && <p className="error" role="alert">We couldn’t save your request. Check your details and try again.</p>}<button className="c-button" disabled={state === 'loading'}>{state === 'loading' ? 'Saving your enquiry…' : 'Send demo enquiry'}<span aria-hidden="true">↗</span></button><p className="form-footnote">No booking is made. Please use fictional details only.</p></form>;
 }

@@ -11,6 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/dm-sans": "^5.3.0",
     "@prisma/client": "^6.7.0",
     "iron-session": "^8.0.4",
     "lucide-react": "^0.468.0",
