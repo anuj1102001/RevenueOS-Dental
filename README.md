@@ -56,8 +56,15 @@ Run `npm run build`, `node --experimental-strip-types --test tests/staff-session
 
 ## Precision proposal experience
 
-The public homepage uses self-hosted Cormorant Garamond and DM Sans fonts, a cream/charcoal/champagne palette, original abstract SVG artwork, responsive navigation, treatment-category cards, an enquiry journey, FAQs, and an accessible demo enquiry form. No clinic photographs, clinician profiles, testimonials or patient outcomes are fabricated.
+The public homepage uses self-hosted Cormorant Garamond and DM Sans fonts, a navy/lavender/mint palette, original playful smile artwork, responsive navigation, treatment-category cards, an enquiry journey, FAQs, and an accessible demo enquiry form. No clinic photographs, clinician profiles, testimonials or patient outcomes are fabricated.
 
 The concierge offers preset navigation replies when `OPENAI_API_KEY` is missing and visibly labels that state. When the existing OpenAI integration returns a response, the UI labels it as AI. Real AI activation still requires configuring the server-side key and redeploying; do not put credentials in source control. Before clinic use, add durable usage limits, approved clinic information, a privacy review and appropriate staff accounts. The current site is an independent sales demo, not an official Precision Dental Clinic website.
 
 Visual changes are scoped under `.clinic-site` in `app/clinic.css` to preserve the working owner dashboard. The enquiry API and database schema are unchanged.
+
+
+## Interactive clinic proposal
+
+The homepage includes a public, local-only RevenueOS walkthrough with three fictional enquiries. Visitors can capture a sample, set a sample follow-up and choose a staff-recorded outcome, or restart with another scenario. It never reads private leads, writes database rows, calls AI, sends messages or creates calendar appointments. The separate demo enquiry form continues to save enquiries through the existing authenticated-dashboard workflow.
+
+The proposal is to pilot RevenueOS alongside a clinic's existing website. No existing Precision integration, automated outreach, booking lift or approved partnership is claimed. Track response time, follow-up completion and staff-recorded booking outcomes against a baseline during an agreed pilot.
